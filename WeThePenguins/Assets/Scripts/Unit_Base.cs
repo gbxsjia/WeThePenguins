@@ -1,9 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit_Base : MonoBehaviour
 {
+    public Text v;
+    public Text b;
+    public float balanceMax = 10f;
+    private float balance=0f;
 
     [SerializeField]
     private float maxSpeed;
@@ -22,8 +28,11 @@ public class Unit_Base : MonoBehaviour
         //degree += angularSpeed * Time.fixedDeltaTime;
         //angularSpeed += k * currentDegree * Time.fixedDeltaTime;
         //bodyTransform.eulerAngles = new Vector3(0, 0, degree);
+        bodyTransform.eulerAngles = new Vector3(0, 0, -10f*balance);
 
         transform.position += speed * Time.fixedDeltaTime * Vector3.right;
+        b.text = balance.ToString();
+        v.text = speed.ToString();
     }
 
     public void InputMovement(float x)
@@ -44,5 +53,24 @@ public class Unit_Base : MonoBehaviour
                 //angularSpeed -= x * angularSpeedChange * Time.deltaTime;
             }
         }
+        BalanceChange(speed);
+    }
+
+    public float BalanceChange(float x)
+    {
+
+        if (x != 0)
+        {
+            balance += x * Time.deltaTime;
+            if (balance > balanceMax)
+            {
+                balance = balanceMax;
+            }
+            else if (balance < -balanceMax)
+            {
+                balance = -balanceMax;
+            }
+        }
+        return balance;
     }
 }

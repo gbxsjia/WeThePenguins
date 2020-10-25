@@ -23,5 +23,6 @@ public class PlayerController : MonoBehaviour
             x = Input.GetAxis("Horizontal2");
         }
         unit.InputMovement(x);
+        //unit.BalanceChange(x);
     }
 }
