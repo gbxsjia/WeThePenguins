@@ -32,7 +32,7 @@ public class BodyPart : MonoBehaviour
         float percent = Owner.GetPercent();
         joint.connectedMassScale = connectMass * (2 - percent);
         var spring = joint.angularYZDrive;
-        spring.positionSpring = Mathf.Max(5, SpringValue * percent);
+        spring.positionSpring = Mathf.Max(3, SpringValue * percent);
         joint.angularYZDrive = spring;
     }
     public void AddForce(Vector3 force,ForceMode mode)
