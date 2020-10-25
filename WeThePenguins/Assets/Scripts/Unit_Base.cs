@@ -28,12 +28,20 @@ public class Unit_Base : MonoBehaviour
 
     public float CurrentStance;
     public float MaxStance;
+
+    //音效文件
+    private AudioClip collide,kick,walk;
+
     private void Awake()
     {
         bodyParts = GetComponentsInChildren<BodyPart>();
         CurrentStance = MaxStance;
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        //音效加载
+        collide = Resources.Load<AudioClip>("SFX/Collide");
+        kick = Resources.Load<AudioClip>("SFX/Kick");
+        walk = Resources.Load<AudioClip>("SFX/Walk");
     }
     private void FixedUpdate()
     {
