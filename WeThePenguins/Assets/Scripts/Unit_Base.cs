@@ -23,6 +23,8 @@ public class Unit_Base : MonoBehaviour
 
     [SerializeField]
     private Transform bodyTransform;
+    private Animator animator;
+    private Rigidbody rb;
 
     public float CurrentStance;
     public float MaxStance;
@@ -30,6 +32,8 @@ public class Unit_Base : MonoBehaviour
     {
         bodyParts = GetComponentsInChildren<BodyPart>();
         CurrentStance = MaxStance;
+        animator = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
@@ -66,7 +70,27 @@ public class Unit_Base : MonoBehaviour
         }
        
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        Unit_Base unit = collision.gameObject.GetComponent<Unit_Base>();
+        if (unit)
+        {
+            Kick(unit);
+        }
+    }
+    public void Kick(Unit_Base other)
+    {
+        animator.SetTrigger("Kick");
+        if (other.transform.position.x > transform.position.x)
+        {
+            rb.AddForce(Vector3.right * -8, ForceMode.Impulse);
+        }
+        else
+        {
+            rb.AddForce(Vector3.right * 8, ForceMode.Impulse);
+        }
+    }
+   
     public void TakeDamage(float damage)
     {
         CurrentStance -= damage;

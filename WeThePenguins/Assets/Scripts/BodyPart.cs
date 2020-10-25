@@ -31,9 +31,9 @@ public class BodyPart : MonoBehaviour
         Owner.TakeDamage(weapon.Attack);
         float percent = Owner.GetPercent();
         joint.connectedMassScale = connectMass * (2 - percent);
-        var spring = joint.angularYZLimitSpring;
-        spring.spring = Mathf.Max(5, SpringValue * percent);
-        joint.angularYZLimitSpring = spring;
+        var spring = joint.angularYZDrive;
+        spring.positionSpring = Mathf.Max(5, SpringValue * percent);
+        joint.angularYZDrive = spring;
     }
     public void AddForce(Vector3 force,ForceMode mode)
     {
