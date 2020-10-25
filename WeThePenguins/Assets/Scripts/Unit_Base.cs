@@ -7,22 +7,32 @@ public class Unit_Base : MonoBehaviour
 
     [SerializeField]
     private float maxSpeed;
-    [SerializeField]
-    private float angularSpeedChange;
     private float speed;
+
+    private float InputDirection;
     [SerializeField]
     private float accelerate;
 
+    private BodyPart[] bodyParts;
+
+    [SerializeField]
+    private float Force;
+    [SerializeField]
+    float AttackInterval;
+    float attackTimer;
 
     [SerializeField]
     private Transform bodyTransform;
+
+    public float CurrentStance;
+    public float MaxStance;
+    private void Awake()
+    {
+        bodyParts = GetComponentsInChildren<BodyPart>();
+        CurrentStance = MaxStance;
+    }
     private void FixedUpdate()
     {
-        //float currentDegree = degree;
-        //degree += angularSpeed * Time.fixedDeltaTime;
-        //angularSpeed += k * currentDegree * Time.fixedDeltaTime;
-        //bodyTransform.eulerAngles = new Vector3(0, 0, degree);
-
         transform.position += speed * Time.fixedDeltaTime * Vector3.right;
     }
 
@@ -30,6 +40,7 @@ public class Unit_Base : MonoBehaviour
     {
         if (x != 0)
         {
+            InputDirection = x;
             speed += x * accelerate * Time.deltaTime;
             if (speed > maxSpeed)
             {
@@ -44,5 +55,28 @@ public class Unit_Base : MonoBehaviour
                 //angularSpeed -= x * angularSpeedChange * Time.deltaTime;
             }
         }
+    }
+
+    public void InputAttack()
+    {
+        if(Time.time> attackTimer)
+        {
+            attackTimer = Time.time + AttackInterval;
+            bodyParts[bodyParts.Length - 1].AddForce(Vector3.right * Force * InputDirection, ForceMode.VelocityChange);
+        }
+       
+    }
+
+    public void TakeDamage(float damage)
+    {
+        CurrentStance -= damage;
+    }
+    public float GetPercent()
+    {
+        return CurrentStance / MaxStance;
+    }
+    public void Dead()
+    {
+        Destroy(gameObject);
     }
 }

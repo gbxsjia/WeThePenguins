@@ -23,5 +23,13 @@ public class PlayerController : MonoBehaviour
             x = Input.GetAxis("Horizontal2");
         }
         unit.InputMovement(x);
+        if (Input.GetKeyDown(KeyCode.J) && camp==0)
+        {
+            unit.InputAttack();
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) && camp == 1)
+        {
+            unit.InputAttack();
+        }
     }
 }
