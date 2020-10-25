@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Unit_Base : MonoBehaviour
 {
-    [SerializeField]
-    private float angularSpeed; //角速度
-    [SerializeField]
-    private float k; //弹性系数
-    private float degree; //当前角度
 
     [SerializeField]
     private float maxSpeed;
@@ -23,10 +18,10 @@ public class Unit_Base : MonoBehaviour
     private Transform bodyTransform;
     private void FixedUpdate()
     {
-        float currentDegree = degree;
-        degree += angularSpeed * Time.fixedDeltaTime;
-        angularSpeed += k * currentDegree * Time.fixedDeltaTime;
-        bodyTransform.eulerAngles = new Vector3(0, 0, degree);
+        //float currentDegree = degree;
+        //degree += angularSpeed * Time.fixedDeltaTime;
+        //angularSpeed += k * currentDegree * Time.fixedDeltaTime;
+        //bodyTransform.eulerAngles = new Vector3(0, 0, degree);
 
         transform.position += speed * Time.fixedDeltaTime * Vector3.right;
     }
@@ -46,7 +41,7 @@ public class Unit_Base : MonoBehaviour
             }
             else
             {
-                angularSpeed -= x * angularSpeedChange * Time.deltaTime;
+                //angularSpeed -= x * angularSpeedChange * Time.deltaTime;
             }
         }
     }
