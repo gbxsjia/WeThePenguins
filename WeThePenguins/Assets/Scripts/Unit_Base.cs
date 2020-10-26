@@ -40,10 +40,6 @@ public class Unit_Base : MonoBehaviour
         CurrentStance = MaxStance;
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        //音效加载
-        collide = Resources.Load<AudioClip>("SFX/Collide");
-        kick = Resources.Load<AudioClip>("SFX/Kick");
-        walk = Resources.Load<AudioClip>("SFX/Walk");
     }
     private void FixedUpdate()
     {
@@ -105,6 +101,9 @@ public class Unit_Base : MonoBehaviour
     public void TakeDamage(float damage)
     {
         CurrentStance -= damage;
+
+        //播放撞击音效
+        AudioManager.instance.PlaySound("Collide");
     }
     public float GetPercent()
     {
