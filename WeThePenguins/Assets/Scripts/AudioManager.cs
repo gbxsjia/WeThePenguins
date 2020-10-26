@@ -4,42 +4,61 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager audioManager;//单例
+    public static AudioManager instance;//单例
 
-    public AudioSource MusicPlayer;
-    public AudioSource SoundPlayer;
+    //音频源
+    public AudioClip[] audioClips;
+    public AudioClip bgm;
+    
+    private AudioSource MusicPlayer;
+    private AudioSource[] SoundPlayer;
+    private Dictionary<string, AudioClip> _DicAudio; //音频库(字典)
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        audioManager = this;
+        instance = this;
 
         //给对象添加AudioSource组件
         MusicPlayer = gameObject.AddComponent<AudioSource>();
-        SoundPlayer = gameObject.AddComponent<AudioSource>();
-        //设置不一开始就播放音效
         MusicPlayer.playOnAwake = false;
-        SoundPlayer.playOnAwake = false;
-    }
+        MusicPlayer.loop = true;
+        MusicPlayer.clip = bgm;
+        MusicPlayer.Play();
 
-    //播放音乐
-    public void PlayMusic(string name)
-    {
-        if (MusicPlayer.isPlaying == false)
+        _DicAudio = new Dictionary<string, AudioClip>();
+        foreach (var item in audioClips)
         {
-            AudioClip clip = Resources.Load<AudioClip>(name);
-            MusicPlayer.clip = clip;
-            MusicPlayer.Play();
+            _DicAudio.Add(item.name, item);
         }
-
     }
+
 
     //播放音效
     public void PlaySound(string name)
     {
-        AudioClip clip = Resources.Load<AudioClip>(name);
-        SoundPlayer.clip = clip;
-        SoundPlayer.PlayOneShot(clip);
+        //当传进来的名字不为空且在音频库中
+        if (_DicAudio.ContainsKey(name) && !string.IsNullOrEmpty(name))
+        {
+            AudioClip clip = _DicAudio[name];
+            SoundPlayer = this.GetComponents<AudioSource>();
+            //如果有空余的audiosource就播放
+            for (int i = 1; i < SoundPlayer.Length; i++)
+            {
+                if (!SoundPlayer[i].isPlaying)
+                {
+                    SoundPlayer[i].clip = clip;
+                    SoundPlayer[i].PlayOneShot(clip);
+                    return;
+                }
+            }
+            //如果没有就新建一个
+            AudioSource newAs = gameObject.AddComponent<AudioSource>();
+            newAs.loop = false;
+            newAs.clip = clip;
+            newAs.playOnAwake = false;
+            newAs.Play();
+        }
     }
 
 }

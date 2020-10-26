@@ -29,19 +29,12 @@ public class Unit_Base : MonoBehaviour
     public float CurrentStance;
     public float MaxStance;
 
-    //音效文件
-    private AudioClip collide,kick,walk;
-
     private void Awake()
     {
         bodyParts = GetComponentsInChildren<BodyPart>();
         CurrentStance = MaxStance;
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        //音效加载
-        collide = Resources.Load<AudioClip>("SFX/Collide");
-        kick = Resources.Load<AudioClip>("SFX/Kick");
-        walk = Resources.Load<AudioClip>("SFX/Walk");
     }
     private void FixedUpdate()
     {
@@ -97,11 +90,16 @@ public class Unit_Base : MonoBehaviour
         {
             rb.AddForce(Vector3.right * 8, ForceMode.Impulse);
         }
+        //播放撞击音效
+        AudioManager.instance.PlaySound("Kick");
     }
    
     public void TakeDamage(float damage)
     {
         CurrentStance -= damage;
+
+        //播放撞击音效
+        AudioManager.instance.PlaySound("Collide");
     }
     public float GetPercent()
     {
