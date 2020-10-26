@@ -9,7 +9,7 @@ public class InGameManager : MonoBehaviour
 
     private float kickTimer;
     [SerializeField]
-    Unit_Base[] Units;
+    public Unit_Base[] Units;
     PlayerController[] Controllers;
 
     public bool isGameOver;
@@ -36,12 +36,20 @@ public class InGameManager : MonoBehaviour
         }   
     }
 
-    public void GameStart()
+    public void GameStart(bool isMultiPlayer)
     {
         UIanimator.Play("GameStart");
         foreach(PlayerController pc in Controllers)
         {
             pc.canControl = true;
+        }
+        if (isMultiPlayer)
+        {
+            Destroy(Controllers[1].GetComponent<AIController>());
+            PlayerController newController = Units[1].gameObject.AddComponent<PlayerController>();
+            newController.camp = 1;
+            newController.canControl = true;
+            Controllers[1] = newController;
         }
     }
     public void GameEnd()
@@ -66,7 +74,7 @@ public class InGameManager : MonoBehaviour
     }
     private IEnumerator Restart()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene(0);
     }
 }

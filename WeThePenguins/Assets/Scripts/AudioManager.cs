@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     //音频源
     public AudioClip[] audioClips;
     public AudioClip bgm;
+    public float BGMVolum;
 
     private AudioSource MusicPlayer;
     private AudioSource[] SoundPlayer;
@@ -24,6 +25,7 @@ public class AudioManager : MonoBehaviour
         MusicPlayer.playOnAwake = false;
         MusicPlayer.loop = true;
         MusicPlayer.clip = bgm;
+        MusicPlayer.volume = BGMVolum;
         MusicPlayer.Play();
 
         _DicAudio = new Dictionary<string, AudioClip>();

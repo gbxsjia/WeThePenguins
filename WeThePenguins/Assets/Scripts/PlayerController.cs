@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     
     public int camp;
-    private Unit_Base unit;
+    protected Unit_Base unit;
 
     public bool canControl;
     private void Awake()
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
         canControl = false;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (canControl)
         {
