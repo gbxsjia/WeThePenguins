@@ -29,6 +29,8 @@ public class Unit_Base : MonoBehaviour
     public float CurrentStance;
     public float MaxStance;
 
+    public bool IsDead;
+
     //音效文件
     private AudioClip collide,kick,walk;
 
@@ -97,6 +99,7 @@ public class Unit_Base : MonoBehaviour
         {
             rb.AddForce(Vector3.right * 8, ForceMode.Impulse);
         }
+        InGameManager.instance.Kick();
     }
    
     public void TakeDamage(float damage)
@@ -107,8 +110,15 @@ public class Unit_Base : MonoBehaviour
     {
         return CurrentStance / MaxStance;
     }
+
+    public event System.Action DeadEvent;
     public void Dead()
     {
-        Destroy(gameObject);
+        IsDead = true;
+        if (DeadEvent != null)
+        {
+            DeadEvent();
+        }
+        InGameManager.instance.GameEnd();
     }
 }

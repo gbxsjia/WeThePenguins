@@ -12,6 +12,8 @@ public class BodyPart : MonoBehaviour
     private ConfigurableJoint joint;
     private float connectMass;
     private float SpringValue;
+
+    private float HitEffectTimer;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -24,6 +26,14 @@ public class BodyPart : MonoBehaviour
             ParentBodyPart.ChildBodyPart = this;
         }
         Owner = GetComponentInParent<Unit_Base>();
+        Owner.DeadEvent += OnDead;
+    }
+
+    private void OnDead()
+    {
+        var spring = joint.angularYZDrive;
+        spring.positionSpring = 0;
+        joint.angularYZDrive = spring;
     }
 
     public void TakeDamage(Weapon_Base weapon)
@@ -32,11 +42,22 @@ public class BodyPart : MonoBehaviour
         float percent = Owner.GetPercent();
         joint.connectedMassScale = connectMass * (2 - percent);
         var spring = joint.angularYZDrive;
-        spring.positionSpring = Mathf.Max(3, SpringValue * percent);
+        spring.positionSpring = Mathf.Max(3, (SpringValue - 10) * percent + 10);
         joint.angularYZDrive = spring;
     }
     public void AddForce(Vector3 force,ForceMode mode)
     {
         rb.AddForce(force, mode);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        BodyPart body = collision.gameObject.GetComponent<BodyPart>();
+        if (Time.time > HitEffectTimer && body && body.Owner!=Owner)
+        {
+            HitEffectTimer = Time.time + 0.5f;
+            GameObject g = Instantiate(ArtResourceManager.instance.CollideEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
+            Destroy(g, 1);
+        }
     }
 }

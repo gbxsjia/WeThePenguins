@@ -14,6 +14,8 @@ public class Head : MonoBehaviour
         Ground g = other.GetComponent<Ground>();
         if (g)
         {
+            GameObject e = Instantiate(ArtResourceManager.instance.DeadEffect, transform.position, Quaternion.identity);
+            Destroy(e, 3);
             Owner.Dead();
         }
     }
