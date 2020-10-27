@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     {
         unit = GetComponent<Unit_Base>();
         unit.DeadEvent += OnDeath;
+        unit.camp = camp;
     }
 
     private void OnDeath()
@@ -34,13 +35,22 @@ public class PlayerController : MonoBehaviour
                 x = Input.GetAxis("Horizontal2");
             }
             unit.InputMovement(x);
-            if (Input.GetKeyDown(KeyCode.J) && camp == 0)
+            if (Input.GetKey(KeyCode.J) && camp == 0)
             {
                 unit.InputAttack();
             }
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) && camp == 1)
+            if (Input.GetKey(KeyCode.KeypadEnter) && camp == 1)
             {
                 unit.InputAttack();
+            }
+      
+            if (Input.GetKeyUp(KeyCode.J) && camp == 0)
+            {
+                unit.ReleaseAttack();
+            }
+            if (Input.GetKeyUp(KeyCode.KeypadEnter) && camp == 1)
+            {
+                unit.ReleaseAttack();
             }
         }    
     }

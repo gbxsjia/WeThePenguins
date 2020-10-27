@@ -1522,11 +1522,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 1
   accelerate: 3
-  Force: 20
+  AttackForce: 15
   AttackInterval: 1
+  JumpForce: 6
+  JumpInterval: 1
   bodyTransform: {fileID: 0}
   CurrentStance: 0
   MaxStance: 100
+  IsDead: 0
 --- !u!114 &940647379794303145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1539,7 +1542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515aae01abb667d4e914ab5c8b515f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camp: 1
+  camp: 0
+  canControl: 0
 --- !u!54 &940647379794303144
 Rigidbody:
   m_ObjectHideFlags: 0

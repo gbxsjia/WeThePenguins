@@ -19,7 +19,7 @@ public class BodyPart : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         joint = GetComponent<ConfigurableJoint>();
         connectMass = joint.connectedMassScale;
-        SpringValue = joint.angularYZLimitSpring.spring;
+        SpringValue = joint.angularYZDrive.positionSpring;
         ParentBodyPart = transform.parent.GetComponent<BodyPart>();
         if (ParentBodyPart)
         {
@@ -38,11 +38,13 @@ public class BodyPart : MonoBehaviour
 
     public void TakeDamage(Weapon_Base weapon)
     {
-        Owner.TakeDamage(weapon.Attack);
-        float percent = Owner.GetPercent();
+        Owner.TakeDamage(weapon.Attack);    
+    }
+    public void SetBend(float percent)
+    {
         joint.connectedMassScale = connectMass * (2 - percent);
         var spring = joint.angularYZDrive;
-        spring.positionSpring = Mathf.Max(3, (SpringValue - 10) * percent + 10);
+        spring.positionSpring = Mathf.Max(3, (SpringValue - 3) * percent + 3);
         joint.angularYZDrive = spring;
     }
     public void AddForce(Vector3 force,ForceMode mode)

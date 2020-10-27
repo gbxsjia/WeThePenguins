@@ -14,6 +14,9 @@ public class AIController : PlayerController
     private float attackChance;
     Unit_Base playerUnit;
     private float x;
+
+    private bool pressAttack;
+    private float releaseTime;
     private void Start()
     {
         StartCoroutine(Decision());
@@ -40,8 +43,8 @@ public class AIController : PlayerController
                     if (Random.Range(0, 1f) < attackChance)
                     {
                         x = playerUnit.transform.position.x > transform.position.x ? 1 : -1;
-                        unit.InputMovement(x);
-                        unit.InputAttack();
+                        pressAttack = true;
+                        releaseTime = Time.time + Random.Range(0, 1);
                     }
                     else
                     {
@@ -57,7 +60,15 @@ public class AIController : PlayerController
         if (canControl)
         {
             unit.InputMovement(x);
- 
+            if (pressAttack)
+            {
+                unit.InputAttack();
+                if(Time.time > releaseTime)
+                {
+                    unit.ReleaseAttack();
+                    pressAttack = false;
+                }
+            }          
         }
     }
 
