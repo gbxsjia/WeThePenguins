@@ -10,6 +10,11 @@ public class Weapon_Base : MonoBehaviour
 
     private float DamageTimer;
 
+    [SerializeField]
+    private GameObject EffectPrefab;
+    [SerializeField]
+    private Transform HitPartTranform;
+
     private void Awake()
     {
         Owner = GetComponentInParent<Unit_Base>();
@@ -23,8 +28,9 @@ public class Weapon_Base : MonoBehaviour
             if (part && part.Owner != Owner)
             {
                 part.TakeDamage(this);
+                GameObject g = Instantiate(EffectPrefab, HitPartTranform.position, Quaternion.identity);
+                Destroy(g, 2);
             }
         }
-
     }
 }

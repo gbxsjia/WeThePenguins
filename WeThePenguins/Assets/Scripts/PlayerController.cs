@@ -6,31 +6,52 @@ public class PlayerController : MonoBehaviour
 {
     
     public int camp;
-    private Unit_Base unit;
+    protected Unit_Base unit;
+
+    public bool canControl;
     private void Awake()
     {
         unit = GetComponent<Unit_Base>();
+        unit.DeadEvent += OnDeath;
+        unit.camp = camp;
     }
-    void Update()
+
+    private void OnDeath()
     {
-        float x = 0;
-        if (camp == 0)
+        canControl = false;
+    }
+
+    protected virtual void Update()
+    {
+        if (canControl)
         {
-            x = Input.GetAxis("Horizontal");
-        }
-       else if (camp == 1)
-        {
-            x = Input.GetAxis("Horizontal2");
-        }
-        unit.InputMovement(x);
-        if (Input.GetKeyDown(KeyCode.J) && camp==0)
-        {
-            unit.InputAttack();
-        }
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) && camp == 1)
-        {
-            unit.InputAttack();
-        }
-    
+            float x = 0;
+            if (camp == 0)
+            {
+                x = Input.GetAxis("Horizontal");
+            }
+            else if (camp == 1)
+            {
+                x = Input.GetAxis("Horizontal2");
+            }
+            unit.InputMovement(x);
+            if (Input.GetKey(KeyCode.J) && camp == 0)
+            {
+                unit.InputAttack();
+            }
+            if (Input.GetKey(KeyCode.KeypadEnter) && camp == 1)
+            {
+                unit.InputAttack();
+            }
+      
+            if (Input.GetKeyUp(KeyCode.J) && camp == 0)
+            {
+                unit.ReleaseAttack();
+            }
+            if (Input.GetKeyUp(KeyCode.KeypadEnter) && camp == 1)
+            {
+                unit.ReleaseAttack();
+            }
+        }    
     }
 }
