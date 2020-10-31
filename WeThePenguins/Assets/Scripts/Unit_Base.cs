@@ -94,7 +94,7 @@ public class Unit_Base : MonoBehaviour
             pressedTime += Time.deltaTime;
             if (pressedTime >= 0.1f)
             {
-                bp.AddForce(bp.transform.right * AttackForce * -2, ForceMode.Force);
+                bp.AddForce(transform.right * AttackForce * -100 * Time.deltaTime, ForceMode.Force);
             }          
         }       
     } 
